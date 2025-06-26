@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const candidatesApi = createApi({
     reducerPath: 'candidatesApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://192.168.1.49:8000/' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://16ae-103-180-81-194.ngrok-free.app' }),
     endpoints: (builder) => ({
         searchCandidates: builder.mutation({
             query: (prompt) => ({

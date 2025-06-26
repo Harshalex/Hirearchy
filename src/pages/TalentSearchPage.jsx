@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 import {
@@ -80,10 +80,20 @@ function TalentSearchPage() {
     useSearchCandidatesMutation();
   // State for manual filter values
   const [manualFilterValues, setManualFilterValues] = useState({});
+  const reduxCandidates = useSelector(state => state.candidates.list);
+
+  // On mount, initialize local candidates from Redux if present
+  useEffect(() => {
+    if (reduxCandidates && reduxCandidates.length > 0) {
+      if (tab === 0) setManualCandidates(reduxCandidates);
+      else setAiCandidates(reduxCandidates);
+    }
+  }, [reduxCandidates, tab]);
 
   const handleSearch = async () => {
     try {
       const result = await searchCandidates(searchPrompt).unwrap();
+      dispatch(setCandidates(result));
       if (tab === 0) {
         setManualCandidates(result);
       } else {
@@ -95,6 +105,7 @@ function TalentSearchPage() {
       } else {
         setAiCandidates([]);
       }
+      dispatch(setCandidates([]));
       console.error("API error:", e);
     }
   };
@@ -102,14 +113,14 @@ function TalentSearchPage() {
   // Filtering logic for manual candidates
   let filteredCandidates = [];
   if (tab === 0) {
-    filteredCandidates = manualCandidates ? [...manualCandidates] : [];
+    filteredCandidates = reduxCandidates ? [...reduxCandidates] : [];
     // Apply filters if not 'All'
     if (location !== "All") filteredCandidates = filteredCandidates.filter(c => (c.raw_data?.location_country || "") === location);
     if (experience !== "All") filteredCandidates = filteredCandidates.filter(c => (c.raw_data?.experience || "") === experience);
     if (role !== "All") filteredCandidates = filteredCandidates.filter(c => (c.raw_data?.role || "") === role);
     if (companyType !== "All") filteredCandidates = filteredCandidates.filter(c => (c.raw_data?.company_type || "") === companyType);
   } else {
-    filteredCandidates = aiCandidates ? [...aiCandidates] : [];
+    filteredCandidates = reduxCandidates ? [...reduxCandidates] : [];
   }
   if (sort === "Name A–Z")
     filteredCandidates.sort((a, b) =>
@@ -223,7 +234,7 @@ function TalentSearchPage() {
           {tab === 0 ? (
             <span className="bg-green-50 text-green-700 font-bold rounded-full px-4 py-1.5 text-sm border border-green-100">Manual Mode</span>
           ) : (
-            <span className="bg-blue-500 text-white font-bold rounded-full px-4 py-1.5 text-sm shadow flex items-center gap-2"><img src={images.logo} alt="AI" /> AI Search</span>
+            <span className="bg-green-50 text-green-700 font-bold rounded-full px-4 py-1.5 text-sm border border-green-100">Ai Search Mode</span>
           )}
         </div>
       </div>

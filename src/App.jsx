@@ -10,12 +10,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={
+        <Route path="/dashboard" element={
           <DashboardLayout>
             <Dashboard />
           </DashboardLayout>
         } />
-        <Route path="/talent-search" element={
+        <Route path="/" element={
           <TalentLayout>
             <TalentSearchPage />
           </TalentLayout>

@@ -10,8 +10,8 @@ import { Link, useLocation } from 'react-router-dom';
 function Sidebar() {
   const location = useLocation();
   const mainLinks = [
-    { icon: <img src={images.dashboard} alt="dashboard" srcset="" />, label: 'Dashboard', to: '/' },
-    { icon: <img src={images.talentsearch} alt="talentsearch" srcset="" />, label: 'Talent Search', to: '/talent-search' },
+    { icon: <img src={images.dashboard} alt="dashboard" srcset="" />, label: 'Dashboard', },
+    { icon: <img src={images.talentsearch} alt="talentsearch" srcset="" />, label: 'Talent Search', to: '/' },
     { icon: <img src={images.aiagent} alt="aiagent" srcset="" />, label: 'AI Agents' },
     { icon: <img src={images.messaging} alt="messaging" srcset="" />, label: 'Messaging' },
     { icon: <img src={images.contracts} alt="contracts" srcset="" />, label: 'Contracts' },
