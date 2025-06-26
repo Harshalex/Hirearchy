@@ -1,0 +1,1306 @@
+[
+    {
+        "education": [
+            {
+                "degrees": [
+                    "masters",
+                    "master of science"
+                ],
+                "location_country": "united states",
+                "school_name": "university of north carolina at charlotte"
+            },
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of science"
+                ],
+                "location_country": "united states",
+                "school_name": "university of north carolina at charlotte"
+            },
+            {
+                "degrees": [
+                    "associates"
+                ],
+                "location_country": "united states",
+                "school_name": "iac group"
+            },
+            {
+                "degrees": [],
+                "location_country": "singapore",
+                "school_name": "coleman college"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "N/A"
+            }
+        ],
+        "job_title": "senior python developer",
+        "linkedin": "linkedin.com/in/jason-k-bellew",
+        "name": "jason bellew",
+        "skills": [
+            "account management",
+            "analysis",
+            "banking",
+            "business communications",
+            "c",
+            "c#",
+            "c++",
+            "consulting",
+            "corporate communications",
+            "data analysis",
+            "databases",
+            "developer tools",
+            "elicitation",
+            "emacs lisp",
+            "graph theory",
+            "java",
+            "leadership",
+            "machine learning",
+            "management",
+            "microsoft excel",
+            "microsoft office",
+            "microsoft powerpoint",
+            "pandas",
+            "programming",
+            "python",
+            "research",
+            "sales",
+            "security",
+            "team building",
+            "technical communication",
+            "training",
+            "written and oral presentation skills"
+        ],
+        "twitter": "twitter.com/macshaggy"
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelor of technology",
+                    "bachelors"
+                ],
+                "location_country": "united states",
+                "school_name": "california state university, fresno"
+            }
+        ],
+        "job_title": "lead java developer",
+        "linkedin": "linkedin.com/in/krishna-pulipaka-9915167",
+        "name": "krishna pulipaka",
+        "skills": [
+            "agile methodologies",
+            "alliance message hub",
+            "business analysis",
+            "core java",
+            "hibernate",
+            "j2ee",
+            "java",
+            "java enterprise edition",
+            "javascript",
+            "jsp",
+            "log analysis",
+            "oracle",
+            "oracle service bus",
+            "requirements analysis",
+            "service oriented architecture",
+            "servlets",
+            "software development",
+            "software development life cycle",
+            "software project management",
+            "spring framework",
+            "spring integration",
+            "spring mvc",
+            "struts",
+            "struts2",
+            "swift alliance",
+            "swift messaging",
+            "swift payments",
+            "web services",
+            "xml"
+        ],
+        "twitter": "twitter.com/kittu532"
+    },
+    {
+        "education": [
+            {
+                "degrees": [],
+                "location_country": "india",
+                "school_name": "national institute of technology karnataka"
+            }
+        ],
+        "job_title": "lead java developer",
+        "linkedin": "linkedin.com/in/alkesh-patidar-66912411",
+        "name": "alkesh patidar",
+        "skills": [
+            "angularjs",
+            "core java",
+            "hibernate",
+            "java",
+            "java enterprise edition",
+            "jsp",
+            "node.js",
+            "react.js",
+            "reactjs",
+            "redux",
+            "rest",
+            "soap",
+            "spring",
+            "spring mvc",
+            "struts",
+            "xml"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelors"
+                ],
+                "location_country": "N/A",
+                "school_name": "N/A"
+            }
+        ],
+        "job_title": "android java developer",
+        "linkedin": "linkedin.com/in/vineet-billorey-aa6b92a",
+        "name": "vineet billorey",
+        "skills": [
+            "android",
+            "core java",
+            "css",
+            "eclipse",
+            "hibernate",
+            "j2me",
+            "java",
+            "javascript",
+            "jquery",
+            "microsoft sql server",
+            "mobile applications",
+            "mobile devices",
+            "php",
+            "requirements analysis",
+            "tomcat",
+            "web applications",
+            "xml"
+        ],
+        "twitter": "twitter.com/vineetbillorey"
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelor of technology",
+                    "bachelors"
+                ],
+                "location_country": "india",
+                "school_name": "shri vaishnav vidyapeeth vishwavidyalaya, indore"
+            },
+            {
+                "degrees": [
+                    "masters",
+                    "master of science"
+                ],
+                "location_country": "india",
+                "school_name": "birla institute of technology and science, pilani"
+            },
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of science"
+                ],
+                "location_country": "N/A",
+                "school_name": "bpc college"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "N/A"
+            }
+        ],
+        "job_title": "java developer",
+        "linkedin": "linkedin.com/in/amlabrm3",
+        "name": "amal abraham",
+        "skills": [
+            "active directory",
+            "aws workspaces",
+            "azure windows virtual desktop",
+            "citrix",
+            "citrix certified administrator",
+            "cloud consulting",
+            "data center",
+            "dhcp",
+            "dynamic host configuration protocol",
+            "it operations",
+            "it service management",
+            "itil",
+            "nexthink",
+            "servers",
+            "service delivery",
+            "vendor management",
+            "virtualization",
+            "vmware",
+            "vmware esx",
+            "windows server",
+            "xen",
+            "xenserver"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelor of technology",
+                    "bachelors"
+                ],
+                "location_country": "india",
+                "school_name": "indian institute of technology (banaras hindu university), varanasi"
+            },
+            {
+                "degrees": [],
+                "location_country": "new zealand",
+                "school_name": "central school"
+            }
+        ],
+        "job_title": "senior java developer | assistant vice president - fx algorithmic trading technology",
+        "linkedin": "linkedin.com/in/raiashu92",
+        "name": "ashutosh rai",
+        "skills": [
+            "algorithms",
+            "core java",
+            "data structures",
+            "electronic trading",
+            "equities",
+            "financial markets",
+            "fix",
+            "git",
+            "intellij idea",
+            "investment banking",
+            "java",
+            "java message service",
+            "jira",
+            "linux",
+            "maven",
+            "microservices",
+            "shell scripting",
+            "spring boot",
+            "spring framework",
+            "sql",
+            "sybase",
+            "tibco ems",
+            "trading systems",
+            "unix"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelors"
+                ],
+                "location_country": "india",
+                "school_name": "rajiv gandhi prodyogiki vishwavidyalaya"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "N/A"
+            }
+        ],
+        "job_title": "senior java developer",
+        "linkedin": "linkedin.com/in/hrishikesh-patidar",
+        "name": "hrishikesh patidar",
+        "skills": [
+            "amazon s3",
+            "amazon web services",
+            "architectural design",
+            "c",
+            "c++",
+            "cascading style sheets",
+            "containers",
+            "core java",
+            "databases",
+            "eclipse",
+            "ecs",
+            "git",
+            "hibernate",
+            "html",
+            "java",
+            "javascript",
+            "javaserver pages",
+            "jenkins",
+            "json",
+            "jsp",
+            "microsoft sql server",
+            "object oriented programming",
+            "oracle",
+            "pipelines",
+            "rest apis",
+            "servlets",
+            "spring boot",
+            "sql",
+            "system deployment",
+            "visual studio",
+            "vue.js",
+            "windows"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [],
+                "location_country": "united states",
+                "school_name": "delhi public school - r. k. puram"
+            },
+            {
+                "degrees": [],
+                "location_country": "india",
+                "school_name": "acropolis group of institutions"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "govt. higher secondary school - indore, india"
+            }
+        ],
+        "job_title": "full stack java developer || spring boot || spring mvc || microservices",
+        "linkedin": "linkedin.com/in/hemlatak",
+        "name": "hemlata kachhway",
+        "skills": [
+            "c#",
+            "core and advance java",
+            "core java",
+            "database management system",
+            "google adwords",
+            "google analytics",
+            "hibernate",
+            "html",
+            "html5",
+            "javaserver pages",
+            "keyword research",
+            "management",
+            "microsoft excel",
+            "microsoft office",
+            "mysql",
+            "online marketing",
+            "php",
+            "ppc",
+            "public speaking",
+            "research",
+            "sem",
+            "seo",
+            "servlets",
+            "social media marketing",
+            "sql",
+            "strategic planning",
+            "struts 2",
+            "team management",
+            "wordpress"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [],
+        "job_title": "java developer",
+        "linkedin": "linkedin.com/in/swapnil-kapoor-44245224",
+        "name": "swapnil kapoor",
+        "skills": [
+            "java",
+            "recruitment"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [],
+                "location_country": "united states",
+                "school_name": "devi ahilya vishwavidyalaya"
+            }
+        ],
+        "job_title": "java developer",
+        "linkedin": "linkedin.com/in/piyush-kushwah-373a7716a",
+        "name": "piyush kushwah",
+        "skills": [
+            "angular material",
+            "c",
+            "data structures",
+            "java",
+            "spring boot",
+            "sql"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "masters"
+                ],
+                "location_country": "india",
+                "school_name": "university of hyderabad"
+            }
+        ],
+        "job_title": "java developer",
+        "linkedin": "linkedin.com/in/vaishnavi-namdev-b08520204",
+        "name": "vaishnavi namdev",
+        "skills": [],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of engineering"
+                ],
+                "location_country": "india",
+                "school_name": "acropolis institute of technology and research, manglia chouraha, indore"
+            }
+        ],
+        "job_title": "java developer",
+        "linkedin": "linkedin.com/in/pradyumna-sarode",
+        "name": "pradyumna sarode",
+        "skills": [
+            "amazon web services",
+            "hibernate",
+            "java",
+            "java enterprise edition",
+            "nosql",
+            "python",
+            "spring boot",
+            "spring framework",
+            "sql"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelor of technology",
+                    "bachelors"
+                ],
+                "location_country": "india",
+                "school_name": "hi - tech institute of engineering & technology"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "dehradun public school"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "dehradun public school"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/ajay-arora-in",
+        "name": "ajay arora",
+        "skills": [
+            ".net",
+            "ajax",
+            "apache",
+            "c",
+            "core java",
+            "databases",
+            "html",
+            "html5",
+            "javascript",
+            "jquery",
+            "linux",
+            "microsoft sql server",
+            "mysql",
+            "operating systems",
+            "perl",
+            "php",
+            "python",
+            "sql",
+            "subversion",
+            "unix",
+            "web services",
+            "web site production",
+            "xml"
+        ],
+        "twitter": "twitter.com/punjabiboy06"
+    },
+    {
+        "education": [
+            {
+                "degrees": [],
+                "location_country": "india",
+                "school_name": "shivaji university"
+            },
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of engineering"
+                ],
+                "location_country": "india",
+                "school_name": "textile & engineering institute, rajwada chowk, ichalkarnji"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/swaroop-angaj-654694a3",
+        "name": "swaroop angaj",
+        "skills": [],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "masters"
+                ],
+                "location_country": "N/A",
+                "school_name": "N/A"
+            },
+            {
+                "degrees": [
+                    "bachelors"
+                ],
+                "location_country": "india",
+                "school_name": "osmania university"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/sampath-manchala-8a656916",
+        "name": "sampath manchala",
+        "skills": [
+            "agile methodologies",
+            "c",
+            "c++",
+            "gprs",
+            "hp quality center",
+            "linux",
+            "lte",
+            "manual testing",
+            "qos",
+            "requirements analysis",
+            "shell scripting",
+            "software development",
+            "sql",
+            "telecommunications",
+            "test automation",
+            "testing",
+            "ttcn3",
+            "umts",
+            "unix",
+            "wireless"
+        ],
+        "twitter": "twitter.com/sampath37778781"
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "masters"
+                ],
+                "location_country": "india",
+                "school_name": "cv raman college of engineering (cvrce), bhubaneswar"
+            },
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of science"
+                ],
+                "location_country": "N/A",
+                "school_name": "utkal university"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "balipatpur refugee high school"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "c.v.raman computer academy,bhubaneswar"
+            },
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of science"
+                ],
+                "location_country": "N/A",
+                "school_name": "k.b.d.a.v college , nirakarpur"
+            }
+        ],
+        "job_title": "research & development engineer python developer",
+        "linkedin": "linkedin.com/in/gurudev-sahoo-1a9a9639",
+        "name": "gurudev sahoo",
+        "skills": [],
+        "twitter": "twitter.com/gurudevsahoo"
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "masters",
+                    "master of business administration"
+                ],
+                "location_country": "australia",
+                "school_name": "national institute of technology"
+            },
+            {
+                "degrees": [
+                    "bachelors"
+                ],
+                "location_country": "N/A",
+                "school_name": "p.p.n. degree college"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "ppn degree college"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "saraswati gyan mandir inter college"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/rahul-pandey-33111b33",
+        "name": "rahul pandey",
+        "skills": [
+            "account management",
+            "android",
+            "android development",
+            "angularjs",
+            "business development",
+            "business strategy",
+            "competitive analysis",
+            "content development",
+            "crm",
+            "customer relationship management",
+            "digital marketing",
+            "django",
+            "e commerce",
+            "e commerce seo",
+            "ios",
+            "ios development",
+            "it outsourcing",
+            "key account management",
+            "lead generation",
+            "magento",
+            "management",
+            "market research",
+            "marketing",
+            "new business development",
+            "node.js",
+            "outsourcing",
+            "phonegap",
+            "project management",
+            "responsive web design",
+            "sales",
+            "search engine marketing",
+            "search engine optimization",
+            "search engine submission",
+            "sem",
+            "seo",
+            "shopify",
+            "social media",
+            "social media marketing",
+            "strategic planning",
+            "strategy",
+            "team management",
+            "web design",
+            "web development",
+            "website development",
+            "wordpress"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of science"
+                ],
+                "location_country": "india",
+                "school_name": "mumbai university mumbai"
+            }
+        ],
+        "job_title": "python developer / algo developer",
+        "linkedin": "linkedin.com/in/nilesh-dadhich-127a4335",
+        "name": "nilesh dadhich",
+        "skills": [],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "masters",
+                    "master of science"
+                ],
+                "location_country": "united kingdom",
+                "school_name": "coventry university"
+            },
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of engineering"
+                ],
+                "location_country": "N/A",
+                "school_name": "anna university"
+            },
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of engineering"
+                ],
+                "location_country": "india",
+                "school_name": "anna university chennai"
+            }
+        ],
+        "job_title": "python developer / database manager / data visualization",
+        "linkedin": "linkedin.com/in/bharanikumarcatna",
+        "name": "bharani catna",
+        "skills": [
+            "after effects",
+            "alias automotive",
+            "alias studio tools",
+            "animation",
+            "autodesk alias",
+            "autodesk showcase",
+            "autodesk software",
+            "bunkspeed",
+            "bunkspeed move",
+            "bunkspeed shot",
+            "maya",
+            "maya with mental ray",
+            "mental ray",
+            "modeling",
+            "photoshop",
+            "rhinoceros",
+            "vred professional"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "masters"
+                ],
+                "location_country": "india",
+                "school_name": "mumbai university mumbai"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "st. john's high school"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/ritesh-sharma5",
+        "name": "ritesh sharma",
+        "skills": [
+            "amazon web services",
+            "api development",
+            "back end web development",
+            "big data",
+            "couchdb",
+            "cyberark",
+            "dashboards",
+            "data analysis",
+            "data modeling",
+            "data visualization",
+            "databases",
+            "devops",
+            "docker",
+            "elasticsearch",
+            "html",
+            "identity and access management",
+            "image processing using irfan view",
+            "linux",
+            "linux",
+            "machine learning",
+            "machine translation",
+            "manual testing",
+            "microsoft sql server",
+            "mongodb",
+            "mysql",
+            "natural language processing",
+            "network traffic analysis",
+            "nosql",
+            "numpy",
+            "object oriented programming",
+            "pcap",
+            "problem solving",
+            "process automation",
+            "python",
+            "python scripting and programming",
+            "regular expressions",
+            "rest apis",
+            "robotic process automation",
+            "selenium",
+            "selenium webdriver",
+            "shell scripting",
+            "software development",
+            "software development tools",
+            "sql",
+            "sqlite",
+            "terraform",
+            "troubleshooting",
+            "tshark",
+            "vb programming",
+            "vb scripting",
+            "vba excel macros",
+            "visual basic for applications",
+            "xml"
+        ],
+        "twitter": "twitter.com/ritesh475"
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelor of technology",
+                    "bachelors"
+                ],
+                "location_country": "india",
+                "school_name": "rajasthan technical university"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/prakash-suthar-3173b639",
+        "name": "prakash suthar",
+        "skills": [
+            "analytical",
+            "c++ language",
+            "computer graphics",
+            "enthusiastic",
+            "flexible",
+            "html",
+            "php",
+            "psd to wordpress",
+            "team player",
+            "typing speed upto 50 55",
+            "wordpress"
+        ],
+        "twitter": "twitter.com/prakash2suthar"
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelors"
+                ],
+                "location_country": "india",
+                "school_name": "chettinad college of engineering & technology"
+            },
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of engineering"
+                ],
+                "location_country": "N/A",
+                "school_name": "chettinad college of engineering and technology"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "marist higher secondary school"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/rchariharan",
+        "name": "hari haran",
+        "skills": [
+            ".net framework",
+            "access points",
+            "amazon cloudwatch",
+            "appdynamics",
+            "asp.net mvc",
+            "c#",
+            "cascading style sheets",
+            "cisco systems products",
+            "computer networking",
+            "core network",
+            "customer service",
+            "developer",
+            "eigrp",
+            "front end development",
+            "hp quicktest professional",
+            "html",
+            "internet of things",
+            "internet protocol suite",
+            "javascript",
+            "juniper networks products",
+            "kibana",
+            "leadership",
+            "management",
+            "manual testing",
+            "microsoft azure",
+            "microsoft excel",
+            "microsoft office",
+            "microsoft word",
+            "network administration",
+            "network security",
+            "network switches",
+            "nutanix",
+            "octopus",
+            "office 365",
+            "powerpoint",
+            "python",
+            "software testing",
+            "splunk",
+            "sql",
+            "team work",
+            "troubleshooting",
+            "web development",
+            "wide area network",
+            "wireless access"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [],
+                "location_country": "india",
+                "school_name": "medi - caps institute of science & technology , ab road, pigdamber (rau) indore - 453331"
+            },
+            {
+                "degrees": [
+                    "masters"
+                ],
+                "location_country": "india",
+                "school_name": "medicaps university"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/srishti-jain-953645125",
+        "name": "srishti jain",
+        "skills": [],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of engineering"
+                ],
+                "location_country": "india",
+                "school_name": "vindhya institute of technology, umarikheda khandwa road, indore"
+            },
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of engineering"
+                ],
+                "location_country": "india",
+                "school_name": "rajiv gandhi prodyogiki vishwavidyalaya"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/rajkumar-lodha-038339153",
+        "name": "rajkumar lodha",
+        "skills": [
+            "ajax",
+            "c (programming language)",
+            "cascading style sheets",
+            "django",
+            "html",
+            "java",
+            "javascript",
+            "jquery",
+            "python",
+            "rest api",
+            "selenium",
+            "sikuli",
+            "sql",
+            "web scraping"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelors"
+                ],
+                "location_country": "india",
+                "school_name": "sunstone"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "a.b.n hs school"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/mustafa-kanch-wala",
+        "name": "mustafa kanchwala",
+        "skills": [
+            "back end web development",
+            "beautiful soup",
+            "bootstrap",
+            "cascading style sheets",
+            "creative problem solving",
+            "django",
+            "django rest framework",
+            "html5",
+            "javascript",
+            "numpy",
+            "object oriented programming",
+            "postman",
+            "python",
+            "react.js",
+            "redux",
+            "selenium",
+            "sql",
+            "web scraping"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelor of technology",
+                    "bachelors"
+                ],
+                "location_country": "india",
+                "school_name": "ips academy indore"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "polytechnic college"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/rakshitjore",
+        "name": "rakshit jore",
+        "skills": [],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of engineering"
+                ],
+                "location_country": "N/A",
+                "school_name": "thadomal shahani engineering college"
+            },
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of engineering"
+                ],
+                "location_country": "india",
+                "school_name": "mumbai university"
+            },
+            {
+                "degrees": [],
+                "location_country": "N/A",
+                "school_name": "k.t.h.m college"
+            },
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of engineering"
+                ],
+                "location_country": "N/A",
+                "school_name": "bandra university"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/bunty-singhal",
+        "name": "bunty singhal",
+        "skills": [
+            "agile and waterfall methodologies",
+            "agile environment",
+            "anaconda",
+            "black box testing",
+            "bugzilla",
+            "firebug",
+            "flask",
+            "functional testing",
+            "greenplum",
+            "informatica",
+            "libreoffice",
+            "linux",
+            "load testing",
+            "manual testing",
+            "microsoft office",
+            "mongodb",
+            "mysql",
+            "nosql",
+            "oracle database",
+            "pandas",
+            "performance testing",
+            "pl/sql",
+            "pyspark",
+            "python",
+            "quality assurance",
+            "redmine",
+            "regression testing",
+            "sahi",
+            "scala",
+            "scrum",
+            "software testing",
+            "software testing life cycle",
+            "sql",
+            "system testing",
+            "test cases",
+            "test management",
+            "test planning",
+            "testing",
+            "unix operating systems",
+            "unix shell scripting",
+            "user acceptance testing",
+            "white box testing",
+            "windows 7"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "masters"
+                ],
+                "location_country": "india",
+                "school_name": "banaras hindu university"
+            },
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of science"
+                ],
+                "location_country": "united states",
+                "school_name": "devi ahilya vishwavidyalaya"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/pravin-dhundale-b54754166",
+        "name": "pravin dhundale",
+        "skills": [
+            ".net framework",
+            "analytical skills",
+            "asp.net",
+            "asp.net mvc",
+            "c",
+            "c#",
+            "c++",
+            "cascading style sheets",
+            "core java",
+            "data science",
+            "data structures",
+            "e learning",
+            "hibernate",
+            "html",
+            "html5",
+            "it strategy",
+            "javascript",
+            "javaserver pages",
+            "jquery",
+            "json",
+            "machine learning",
+            "networking",
+            "operating systems",
+            "react",
+            "react.js",
+            "research and development",
+            "risk management",
+            "spring framework",
+            "sql",
+            "sun certified java programmer",
+            "technical support",
+            "testing",
+            "time management",
+            "user interface design",
+            "web development"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [],
+                "location_country": "india",
+                "school_name": "oriental institute of science & technology, thakral nagar, opp patel nagar, raisen road, bhopal - 462021"
+            }
+        ],
+        "job_title": "senior python developer / team lead",
+        "linkedin": "linkedin.com/in/pushpendra-jaiswal-61501195",
+        "name": "pushpendra jaiswal",
+        "skills": [
+            "django",
+            "javascript",
+            "python",
+            "rest framework",
+            "sql"
+        ],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of engineering"
+                ],
+                "location_country": "N/A",
+                "school_name": "sushila devi bansal college of technology indore"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/ghanshyam-patidar-002a85155",
+        "name": "ghanshyam patidar",
+        "skills": [],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of science"
+                ],
+                "location_country": "india",
+                "school_name": "govt. holkar science college a.b. road, indore"
+            },
+            {
+                "degrees": [],
+                "location_country": "india",
+                "school_name": "makhanlal chaturvedi national university of journalism and communication, bhopal"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/ashutosh-rajoriya-000a5b1b9",
+        "name": "ashutosh rajoriya",
+        "skills": [],
+        "twitter": null
+    },
+    {
+        "education": [
+            {
+                "degrees": [
+                    "bachelors",
+                    "bachelor of science"
+                ],
+                "location_country": "india",
+                "school_name": "vikram university, ujjain"
+            }
+        ],
+        "job_title": "python developer",
+        "linkedin": "linkedin.com/in/shivani-parmar-8349b2247",
+        "name": "shivani parmar",
+        "skills": [],
+        "twitter": null
+    }
+]
