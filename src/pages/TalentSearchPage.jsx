@@ -1525,7 +1525,7 @@ function TalentSearchPage() {
                   <button
                     className="bg-blue-500 text-white font-medium rounded-md px-4 py-1.5 text-sm shadow-sm hover:bg-blue-600 transition"
                     onClick={() =>
-                      navigate(`/${i}`, {
+                      navigate(`/talent-search/${i}`, {
                         state: { candidates: filteredCandidates },
                       })
                     }

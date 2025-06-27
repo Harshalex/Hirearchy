@@ -10,11 +10,11 @@ function LoginPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Login:', { email, password });
-    navigate('/');
+    navigate('/talent-search');
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{background: 'linear-gradient(135deg, rgba(1,32,126,1) 0%, rgba(40,98,235,1) 100%)'}}>
+    <div className="min-h-screen flex items-center justify-center bg-[#F6F6F6]">
       <div className="bg-white rounded-2xl shadow-lg p-10 w-full max-w-md flex flex-col items-center border border-gray-100">
         <div className="flex items-center justify-center bg-gradient-to-br from-[#01207E] to-[#2862EB] rounded-full h-20 w-20 mb-5 shadow-sm">
           <img src={images.logo} alt="Logo" className="h-12 w-12 object-contain" />

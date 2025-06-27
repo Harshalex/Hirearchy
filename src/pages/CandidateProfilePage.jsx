@@ -198,7 +198,7 @@ function CandidateProfilePage() {
       <div className="flex items-center gap-4 mb-6">
         <button
           className="flex items-center gap-2 text-blue-900 font-bold text-lg hover:underline"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/talent-search")}
         >
           <FaChevronLeft /> Back to Search
         </button>

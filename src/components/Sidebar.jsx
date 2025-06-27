@@ -28,7 +28,7 @@ function Sidebar() {
   const location = useLocation();
   const mainLinks = [
     { icon: <FiHome />, label: "Dashboard" },
-    { icon: <IoSearchOutline />, label: "Talent Search", to: "/" },
+    { icon: <IoSearchOutline />, label: "Talent Search", to: "/talent-search" },
     { icon: <TbBrain />, label: "AI Agents" },
     { icon: <LuMessageSquare />, label: "Messaging" },
     { icon: <HiOutlineDocumentText />, label: "Contracts" },
@@ -55,9 +55,9 @@ function Sidebar() {
               label={link.label}
               to={link.to}
               active={
-                (link.to === "/" && (location.pathname === "/" || /^\/\d+$/.test(location.pathname))) ||
+                (link.to === "/talent-search" && (/^\/talent-search(\/\d+)?$/.test(location.pathname))) ||
                 (link.to &&
-                  link.to !== "/" &&
+                  link.to !== "/talent-search" &&
                   location.pathname.startsWith(link.to))
               }
             />

@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import TalentSearchPage from './pages/TalentSearchPage';
 import CandidateProfilePage from './pages/CandidateProfilePage';
 import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 import './App.css';
 
 function App() {
@@ -16,13 +17,15 @@ function App() {
             <Dashboard />
           </DashboardLayout>
         } />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/talent-search" element={
           <TalentLayout>
             <TalentSearchPage />
           </TalentLayout>
         } />
-        <Route path=":candidateId" element={
+        <Route path="/talent-search/:candidateId" element={
           <TalentLayout>
             <CandidateProfilePage />
           </TalentLayout>
