@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
+import { LuBuilding } from "react-icons/lu";
+import { SlLocationPin } from "react-icons/sl";
+import { RiGraduationCapLine } from "react-icons/ri";
 import {
   FaSearch,
   FaInfoCircle,
@@ -19,6 +22,7 @@ import {
 } from "react-icons/fa";
 import { HiOutlineUsers } from "react-icons/hi";
 import { BsRobot } from "react-icons/bs";
+import { IoSparklesOutline } from "react-icons/io5";
 import { useSearchCandidatesMutation } from "../api/candidatesApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setCandidates } from "../slices/candidatesSlice";
@@ -1331,48 +1335,46 @@ function TalentSearchPage() {
       )}
       {/* AI Search Examples (if AI tab) */}
       {tab === 1 && (
-        <div className="bg-[#F1F7FF] rounded-xl px-8 py-8 mb-6 flex flex-col md:flex-row md:items-center md:gap-12 text-[#1A237E] text-[15px] font-medium shadow-sm">
-          <div className="flex-1 flex flex-col gap-4">
-            <div className="flex gap-8 flex-wrap mb-2">
+        <div className="rounded-[32px] px-12 py-10 mb-6 w-full min-h-[120px] flex flex-col justify-center" style={{ background: 'rgba(224, 233, 255, 1)', boxShadow: 'none' }}>
+          {/* Heading Row */}
+          <div className="flex items-center mb-6">
+            <IoSparklesOutline className="text-[#7B8CFF] text-xl mr-3 mt-[-2px]" />
+            <span className="text-[18px] font-semibold text-[#181C32]">AI Search Examples</span>
+          </div>
+          {/* Examples: Two columns, smaller font, spaced far apart */}
+          <div className="flex flex-row gap-0 w-full">
+            <div className="flex flex-col gap-6 flex-1">
               <a
                 href="#"
-                className="underline hover:text-blue-500 px-3 py-2 rounded-lg bg-white/60"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setSearchPrompt(aiExamples[0]);
-                }}
+                className="underline text-[#4F7FFF] hover:text-[#2B5CD6] text-[15px] font-medium leading-tight"
+                style={{background: 'none', borderRadius: 0, padding: 0}}
+                onClick={e => { e.preventDefault(); setSearchPrompt(aiExamples[0]); }}
               >
                 “{aiExamples[0]}”
               </a>
               <a
                 href="#"
-                className="underline hover:text-blue-500 px-3 py-2 rounded-lg bg-white/60"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setSearchPrompt(aiExamples[1]);
-                }}
+                className="underline text-[#4F7FFF] hover:text-[#2B5CD6] text-[15px] font-medium leading-tight"
+                style={{background: 'none', borderRadius: 0, padding: 0}}
+                onClick={e => { e.preventDefault(); setSearchPrompt(aiExamples[1]); }}
               >
                 “{aiExamples[1]}”
               </a>
             </div>
-            <div className="flex gap-8 flex-wrap">
+            <div className="flex flex-col gap-6 flex-1">
               <a
                 href="#"
-                className="underline hover:text-blue-500 px-3 py-2 rounded-lg bg-white/60"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setSearchPrompt(aiExamples[2]);
-                }}
+                className="underline text-[#4F7FFF] hover:text-[#2B5CD6] text-[15px] font-medium leading-tight"
+                style={{background: 'none', borderRadius: 0, padding: 0}}
+                onClick={e => { e.preventDefault(); setSearchPrompt(aiExamples[2]); }}
               >
                 “{aiExamples[2]}”
               </a>
               <a
                 href="#"
-                className="underline hover:text-blue-500 px-3 py-2 rounded-lg bg-white/60"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setSearchPrompt(aiExamples[3]);
-                }}
+                className="underline text-[#4F7FFF] hover:text-[#2B5CD6] text-[15px] font-medium leading-tight"
+                style={{background: 'none', borderRadius: 0, padding: 0}}
+                onClick={e => { e.preventDefault(); setSearchPrompt(aiExamples[3]); }}
               >
                 “{aiExamples[3]}”
               </a>
@@ -1425,7 +1427,7 @@ function TalentSearchPage() {
         )}
         {isError && (
           <div className="text-center text-red-500 py-10">
-            Failed to load candidates.
+            No candidates found matching your criteria
           </div>
         )}
         {!isLoading &&
@@ -1462,15 +1464,8 @@ function TalentSearchPage() {
                 className="bg-white rounded-2xl shadow-[0_2px_12px_0_rgba(16,24,40,0.06)] p-6 flex items-start gap-6 border border-gray-100 min-h-[170px]"
               >
                 {/* Avatar */}
-                <div className="w-12 h-12 rounded-full bg-[#F3F4F6] flex items-center justify-center text-lg font-bold text-gray-400 mr-4 border border-gray-200 min-w-[48px]">
-                  {c.full_name
-                    ? c.full_name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")
-                        .toUpperCase()
-                        .slice(0, 2)
-                    : "?"}
+                <div className="w-12 h-12 rounded-full bg-[#F3F4F6] flex items-center justify-center text-2xl text-gray-400 mr-4 border border-gray-200 min-w-[48px]">
+                  <FaRegUser />
                 </div>
                 {/* Info */}
                 <div className="flex-1 min-w-0">
@@ -1482,19 +1477,19 @@ function TalentSearchPage() {
                       {(c.match || 92) + "% Match"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <FaRegBuilding className="text-gray-400 text-base" />
-                    <a href="#" className="text-[#2D5BD1] underline font-medium text-[16px] hover:text-[#1a3a8c]">
+                  <div className="flex items-center gap-2 mb-1 py-1">
+                    <LuBuilding className="text-gray-400 text-xl" />
+                    <a href="#" className="text-gray-500 underline font-medium text-[16px] hover:text-[#1a3a8c]">
                       {toTitleCase(jobTitle)}
                     </a>
                     {companyName && <span className="text-[#A0A0A0] text-[15px] ml-2">at {toTitleCase(companyName)}</span>}
                   </div>
-                  <div className="flex items-center gap-2 mb-1 text-gray-500 text-[15px]">
-                    <FaMapMarkerAlt className="text-gray-400" />
+                  <div className="flex items-center gap-2 mb-1 text-gray-500 text-[16px] py-1">
+                    <SlLocationPin className="text-gray-400 text-xl" />
                     <span>{toTitleCase(raw.location_country || "")}</span>
                   </div>
-                  <div className="flex items-center gap-2 mb-1 text-gray-500 text-[15px]">
-                    <FaUniversity className="text-gray-400" />
+                  <div className="flex items-center gap-2 mb-1 text-gray-500 text-[15px] pb-2">
+                    <RiGraduationCapLine className="text-gray-400 text-xl" />
                     <span>{toTitleCase(educationArr[0]?.school?.name || "")}</span>
                   </div>
                   {experience && (
@@ -1504,7 +1499,7 @@ function TalentSearchPage() {
                     {skills.slice(0, 6).map((skill, idx) => (
                       <span
                         key={skill}
-                        className={`px-3 py-1 text-xs font-medium rounded-full border ${idx === 0 ? 'bg-[#FFF9E5] text-[#222] border-[#F6E9C6]' : 'bg-white text-[#222] border-[#D0D5DD]'}`}
+                        className={`px-3 py-1 text-xs font-medium rounded-full border ${idx === 0 ? 'bg-[rgba(254,249,195,1)] text-[#222] border-[rgba(254,249,195,1)]' : 'bg-white text-[#222] border-[#D0D5DD]'}`}
                         style={{minWidth: idx === 0 ? 56 : 0, fontWeight: idx === 0 ? 600 : 500}}
                       >
                         {toTitleCase(skill)}
@@ -1522,25 +1517,23 @@ function TalentSearchPage() {
                     </div>
                   )}
                 </div>
-                {/* Actions */}
-                <div className="flex flex-col items-end gap-2 min-w-[180px]">
-                  <div className="flex gap-3 mb-2">
-                    <button className="border border-[#E0E0E0] bg-white text-[#222] font-semibold rounded-lg px-7 py-2 text-base shadow-sm hover:bg-[#F6F6F6] transition min-w-[110px]">
-                      Shortlist
-                    </button>
-                    <button
-                      className="bg-[#7B8CFF] text-white font-semibold rounded-lg px-7 py-2 text-base shadow-sm hover:bg-[#6a7be6] transition min-w-[110px]"
-                      onClick={() =>
-                        navigate(`/talent-search/${i}`, {
-                          state: { candidates: filteredCandidates },
-                        })
-                      }
-                    >
-                      View Profile
-                    </button>
-                  </div>
-                  <button className="bg-transparent border border-green-400 rounded-full p-2 m-0 hover:opacity-80">
-                    <svg width="20" height="20" fill="none" viewBox="0 0 20 20"><path d="M15 3H5a2 2 0 0 0-2 2v12a1 1 0 0 0 1.447.894L10 15.118l5.553 2.776A1 1 0 0 0 17 17V5a2 2 0 0 0-2-2Z" stroke="#22C55E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                {/* Actions: all in one row */}
+                <div className="flex items-center gap-2 min-w-[180px] justify-end mt-2">
+                  <button className="border border-gray-200 bg-white text-gray-700 font-medium rounded-md px-4 py-1.5 text-sm shadow-sm hover:bg-gray-100 transition">
+                    Shortlist
+                  </button>
+                  <button
+                    className="bg-blue-500 text-white font-medium rounded-md px-4 py-1.5 text-sm shadow-sm hover:bg-blue-600 transition"
+                    onClick={() =>
+                      navigate(`/${i}`, {
+                        state: { candidates: filteredCandidates },
+                      })
+                    }
+                  >
+                    View Profile
+                  </button>
+                  <button className="bg-white border-2 border-green-400 rounded-full p-2 hover:bg-green-50 transition ml-1">
+                    <svg width="18" height="18" fill="none" viewBox="0 0 20 20"><path d="M15 3H5a2 2 0 0 0-2 2v12a1 1 0 0 0 1.447.894L10 15.118l5.553 2.776A1 1 0 0 0 17 17V5a2 2 0 0 0-2-2Z" stroke="#22C55E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </button>
                 </div>
               </div>

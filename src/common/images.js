@@ -11,6 +11,8 @@ import location from "../assets/location.png"
 import education from "../assets/education.png"
 import star from "../assets/satr.png"
 import bookmark from "../assets/bookmark.png"
+import badge from "../assets/badge.png"
+import send from "../assets/send.png"
 const images = {
     logo,
     dashboard,
@@ -24,7 +26,9 @@ const images = {
     bookmark,
     location,
     star,
-    education
+    education,
+    badge,
+    send
 }
 
 export default images;
