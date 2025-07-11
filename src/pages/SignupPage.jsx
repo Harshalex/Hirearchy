@@ -113,7 +113,7 @@ function SignupPage() {
                 onChange={(e) => setRole(e.target.value)}
                 required
               >
-                <option value="org-admin">CEO</option>
+                <option value="org_admin">CEO</option>
                 <option value="recruiter">HR</option>
               </select>
             </div>
