@@ -9,7 +9,7 @@ function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("org-admin");
+  const [role, setRole] = useState("org_admin");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
