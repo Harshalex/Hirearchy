@@ -7,19 +7,25 @@ import CandidateProfilePage from './pages/CandidateProfilePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import './App.css';
+import PublicRoute from './components/PublicRoute';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route element={<PublicRoute/>}>
+      <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        </Route>
+
+        <Route element={<ProtectedRoute/>}>
         <Route path="/dashboard" element={
           <DashboardLayout>
             <Dashboard />
           </DashboardLayout>
         } />
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
         <Route path="/talent-search" element={
           <TalentLayout>
             <TalentSearchPage />
@@ -30,6 +36,7 @@ function App() {
             <CandidateProfilePage />
           </TalentLayout>
         } />
+        </Route>
         {/* Add more routes for other pages here */}
       </Routes>
     </BrowserRouter>

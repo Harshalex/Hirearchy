@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 import { LuBuilding } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
@@ -23,13 +23,15 @@ import {
 import { HiOutlineUsers } from "react-icons/hi";
 import { BsRobot } from "react-icons/bs";
 import { IoSparklesOutline } from "react-icons/io5";
-import { useSearchCandidatesMutation } from "../api/candidatesApi";
+import { useSearchCandidatesMutation, useSearchCandidatesWithFiltersMutation } from "../api/candidatesApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setCandidates } from "../slices/candidatesSlice";
 import images from "../common/images.js";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import AISearch from '../components/AISearch';
+import ManualSearch from '../components/ManualSearch';
 
 const aiExamples = [
   "Senior React developers with startup experience",
@@ -38,11 +40,6 @@ const aiExamples = [
   "Data scientist PhD and industry experience",
 ];
 
-const locationOptions = ["All", "San Francisco, CA", "Austin, TX"];
-const experienceOptions = ["All", "5 years", "10 years"];
-const companyTypeOptions = ["All", "Tech", "Finance"];
-const roleOptions = ["All", "Engineer", "Product Manager"];
-const sortOptions = ["Best Match", "Newest First", "Name A–Z"];
 const exportOptions = ["Excel", "CSV", "PDF"];
 const filterOptions = ["Location", "Years of Experience", "Company Size"];
 
@@ -104,7 +101,7 @@ const filterCategories = [
 function TalentSearchPage() {
   const [tab, setTab] = useState(1); // 1: AI (default), 0: Manual
   const [searchPrompt, setSearchPrompt] = useState("");
-  const [location, setLocation] = useState("All");
+  const [selectedLocation, setSelectedLocation] = useState("All");
   const [experience, setExperience] = useState("All");
   const [companyType, setCompanyType] = useState("All");
   const [role, setRole] = useState("All");
@@ -118,10 +115,13 @@ function TalentSearchPage() {
   const [showManualFilterModal, setShowManualFilterModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("general");
   const [filterSearch, setFilterSearch] = useState("");
+  const [isManualSearchLoading, setIsManualSearchLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
-  const [searchCandidates, { isLoading, isError }] =
-    useSearchCandidatesMutation();
+  const [searchCandidates, { isLoading, isError }] = useSearchCandidatesMutation();
+  const [searchCandidatesWithFilters] = useSearchCandidatesWithFiltersMutation();
+  
   // State for manual filter values
   const [manualFilterValues, setManualFilterValues] = useState({});
   const reduxCandidates = useSelector((state) => state.candidates.list);
@@ -133,6 +133,13 @@ function TalentSearchPage() {
       else setAiCandidates(reduxCandidates);
     }
   }, [reduxCandidates, tab]);
+
+  // Restore searchPrompt from navigation state if present
+  useEffect(() => {
+    if (location.state?.searchPrompt) {
+      setSearchPrompt(location.state.searchPrompt);
+    }
+  }, [location.state]);
 
   const handleSearch = async () => {
     try {
@@ -154,14 +161,31 @@ function TalentSearchPage() {
     }
   };
 
+  // New function to handle manual search with filters
+  const handleManualSearch = async () => {
+    setIsManualSearchLoading(true);
+    try {
+      const result = await searchCandidatesWithFilters(manualFilterValues).unwrap();
+      dispatch(setCandidates(result));
+      setManualCandidates(result);
+      setShowManualFilterModal(false);
+    } catch (e) {
+      setManualCandidates([]);
+      dispatch(setCandidates([]));
+      console.error("Manual search API error:", e);
+    } finally {
+      setIsManualSearchLoading(false);
+    }
+  };
+
   // Filtering logic for manual candidates
   let filteredCandidates = [];
   if (tab === 0) {
     filteredCandidates = reduxCandidates ? [...reduxCandidates] : [];
     // Apply filters if not 'All'
-    if (location !== "All")
+    if (selectedLocation !== "All")
       filteredCandidates = filteredCandidates.filter(
-        (c) => (c.raw_data?.location_country || "") === location
+        (c) => (c.raw_data?.location_country || "") === selectedLocation
       );
     if (experience !== "All")
       filteredCandidates = filteredCandidates.filter(
@@ -304,6 +328,37 @@ function TalentSearchPage() {
     }, 50);
   }, []);
 
+  // Add handler to sync AI prompt parsing to manual filters
+  const handlePromptParsed = (parsed) => {
+    if (!parsed) return;
+
+    setManualFilterValues((prev) => {
+      const next = {
+        ...prev,
+        ...(parsed.minExperience && { minExperience: parsed.minExperience }),
+        ...(parsed.maxExperience && { maxExperience: parsed.maxExperience }),
+        ...(parsed.location && { location: String(parsed.location) }),
+        ...(parsed.skills && { skills: Array.isArray(parsed.skills) ? parsed.skills : String(parsed.skills).split(',').map(s => s.trim()).filter(Boolean) }),
+        ...(parsed.jobTitle && { jobTitle: parsed.jobTitle }),
+        ...(parsed.universities && { universities: parsed.universities }),
+        ...(parsed.companyName && { companyName: parsed.companyName }),
+        ...(parsed.industry && { industry: parsed.industry }),
+        ...(parsed.fundingStage && { fundingStage: parsed.fundingStage }),
+        ...(parsed.revenue && { revenue: parsed.revenue }),
+      };
+      // Only update if something actually changed
+      const keys = Object.keys(next);
+      for (let key of keys) {
+        if (Array.isArray(next[key]) && Array.isArray(prev[key])) {
+          if (next[key].join(',') !== prev[key].join(',')) return next;
+        } else if (next[key] !== prev[key]) {
+          return next;
+        }
+      }
+      return prev; // No change, don't update state
+    });
+  };
+
   return (
     <div className="px-10 py-8 w-full max-w-full min-h-screen bg-[#F6F6F6] box-border">
       {/* Topbar */}
@@ -331,29 +386,14 @@ function TalentSearchPage() {
       </div>
       {/* Search Bar */}
       {tab === 1 && (
-        <div className="flex items-center gap-6 mt-6 mb-4">
-          <div className="relative flex-1">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-200 text-2xl pointer-events-none">
-              <FaSearch />
-            </span>
-            <input
-              type="text"
-              placeholder="Find senior engineers with React and Python experience in tech companies"
-              value={searchPrompt}
-              onChange={(e) => setSearchPrompt(e.target.value)}
-              className="w-full pl-14 pr-4 py-3 rounded-md bg-white border border-gray-100 text-lg placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100 shadow-sm"
-              style={{ fontWeight: 500 }}
-            />
-          </div>
-          <button
-            className="flex items-center gap-2 px-8 py-3 rounded-md bg-[#7B8CFF] text-white text-lg font-semibold h-[56px] -ml-1 hover:bg-[#6a7be6] transition-all duration-150"
-            style={{ boxShadow: "none", border: "none" }}
-            onClick={handleSearch}
-          >
-            <FaSearch className="text-xl" />
-            Search
-          </button>
-        </div>
+        <AISearch
+          searchPrompt={searchPrompt}
+          setSearchPrompt={setSearchPrompt}
+          onPromptParsed={handlePromptParsed}
+          onSearch={handleSearch}
+          isLoading={isLoading}
+          aiExamples={aiExamples}
+        />
       )}
       {/* Mode Switch and Export Row (single line) */}
       <div className="flex items-center justify-between mb-4">
@@ -425,914 +465,20 @@ function TalentSearchPage() {
         </Menu>
       </div>
       {/* Manual Search Filter Modal (Figma-style, panel, gray/opaque background) */}
-      {showManualFilterModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#e5e7eb] bg-opacity-80 transition-colors duration-200">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl h-[90vh] flex flex-col border border-gray-200 pointer-events-auto mx-auto my-8 overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between border-b px-10 py-5 sticky top-0 bg-gradient-to-b from-[#f3f4f6] to-white z-10 shadow-sm relative">
-              <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">
-                Edit Your Search Filters
-              </h2>
-              <div className="flex items-center gap-3">
-                <button
-                  className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-bold rounded-lg px-7 py-2 text-base shadow-lg transition-all duration-150"
-                  onClick={() => {
-                    console.log("Manual Filter Values:", manualFilterValues);
-                    setShowManualFilterModal(false);
-                  }}
-                >
-                  Save Changes
-                </button>
-                <button
-                  className="ml-4 p-2 rounded-full hover:bg-gray-200 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-150"
-                  aria-label="Close modal"
-                  onClick={() => setShowManualFilterModal(false)}
-                  style={{ marginRight: "-12px" }}
-                >
-                  <FaTimes className="text-xl" />
-                </button>
-              </div>
-            </div>
-            <div className="flex flex-1 min-h-0">
-              {/* Sidebar */}
-              <div className="w-64 border-r border-gray-200 flex flex-col bg-[#f7f8fa] h-full">
-                <div className="p-4 border-b border-gray-100">
-                  <input
-                    type="text"
-                    placeholder="Search filters"
-                    value={filterSearch}
-                    onChange={(e) => setFilterSearch(e.target.value)}
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-200 focus:outline-none"
-                  />
-                </div>
-                <div className="flex-1 overflow-y-auto">
-                  {filterCategories
-                    .filter((cat) =>
-                      cat.label
-                        .toLowerCase()
-                        .includes(filterSearch.toLowerCase())
-                    )
-                    .map((cat) => (
-                      <button
-                        key={cat.key}
-                        className={`w-full flex items-center gap-3 px-5 py-3 text-left text-[15px] font-semibold rounded-lg transition-all duration-100 mb-1
-                        ${
-                          selectedCategory === cat.key
-                            ? "bg-gradient-to-r from-blue-100 to-blue-50 text-blue-800 shadow font-bold"
-                            : "hover:bg-gray-100 text-gray-700"
-                        }`}
-                        onClick={() => setSelectedCategory(cat.key)}
-                      >
-                        {cat.icon}
-                        {cat.label}
-                      </button>
-                    ))}
-                </div>
-                <div className="p-3 border-t border-gray-100 flex items-center gap-2">
-                  <input type="checkbox" id="hide-inactive" className="mr-2" />
-                  <label
-                    htmlFor="hide-inactive"
-                    className="text-xs text-gray-500"
-                  >
-                    Hide inactive filters
-                  </label>
-                </div>
-              </div>
-              {/* Main Content */}
-              <div className="flex-1 flex flex-col h-full overflow-y-auto p-10 bg-[#fcfcfd]">
-                {/* General Category Fields */}
-                {selectedCategory === "general" && (
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Min Experience (Years)
-                      </label>
-                      <input
-                        type="number"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="0"
-                        value={manualFilterValues.minExperience || ""}
-                        onChange={(e) =>
-                          updateManualFilter("minExperience", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Max Experience (Years)
-                      </label>
-                      <input
-                        type="number"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Example: 10 years"
-                        value={manualFilterValues.maxExperience || ""}
-                        onChange={(e) =>
-                          updateManualFilter("maxExperience", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Required Contact Info
-                      </label>
-                      <select
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        value={
-                          manualFilterValues.requiredContactInfo || "Match Any"
-                        }
-                        onChange={(e) =>
-                          updateManualFilter(
-                            "requiredContactInfo",
-                            e.target.value
-                          )
-                        }
-                      >
-                        <option>Match Any</option>
-                        <option>Email</option>
-                        <option>Phone</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Hide Viewed or Shortlisted Profiles{" "}
-                        <span className="ml-1 text-xs text-gray-400">i</span>
-                      </label>
-                      <select
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        value={
-                          manualFilterValues.hideViewed || "Don't hide profiles"
-                        }
-                        onChange={(e) =>
-                          updateManualFilter("hideViewed", e.target.value)
-                        }
-                      >
-                        <option>Don't hide profiles</option>
-                        <option>Hide viewed</option>
-                        <option>Hide shortlisted</option>
-                      </select>
-                    </div>
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Only Connections{" "}
-                        <span className="text-xs text-gray-400 ml-1">i</span>
-                      </label>
-                      <select
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        value={
-                          manualFilterValues.onlyConnections ||
-                          "Don't restrict to connections"
-                        }
-                        onChange={(e) =>
-                          updateManualFilter("onlyConnections", e.target.value)
-                        }
-                      >
-                        <option>Don't restrict to connections</option>
-                        <option>Only 1st degree</option>
-                        <option>Only 2nd degree</option>
-                      </select>
-                    </div>
-                  </div>
-                )}
-                {/* Locations Category Fields */}
-                {selectedCategory === "locations" && (
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Location(s)
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Examples: San Francisco / United States / NYC ..."
-                        value={manualFilterValues.location || ""}
-                        onChange={(e) =>
-                          updateManualFilter("location", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Timezone{" "}
-                        <span className="ml-1 text-xs text-gray-400">i</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Select timezone"
-                        value={manualFilterValues.timezone || ""}
-                        onChange={(e) =>
-                          updateManualFilter("timezone", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Past Locations
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Examples: San Francisco / United States / NYC ..."
-                        value={manualFilterValues.pastLocations || ""}
-                        onChange={(e) =>
-                          updateManualFilter("pastLocations", e.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
-                {/* Job Category Fields */}
-                {selectedCategory === "job" && (
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Job Title
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="e.g. Software Engineer"
-                        value={manualFilterValues.jobTitle || ""}
-                        onChange={(e) =>
-                          updateManualFilter("jobTitle", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Seniority
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="e.g. Senior"
-                        value={manualFilterValues.seniority || ""}
-                        onChange={(e) =>
-                          updateManualFilter("seniority", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Job Titles{" "}
-                        <span className="ml-1 text-xs text-gray-400">
-                          Current Only
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Start typing a job title and select from the list"
-                        value={manualFilterValues.currentJobTitles || ""}
-                        onChange={(e) =>
-                          updateManualFilter("currentJobTitles", e.target.value)
-                        }
-                      />
-                      <button className="mt-2 bg-purple-100 text-purple-700 font-bold rounded px-4 py-2 text-sm">
-                        Get Suggestions
-                      </button>
-                    </div>
-                    <div className="col-span-2 grid grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-semibold mb-1">
-                          Time Spent at Current Role{" "}
-                          <span className="ml-1 text-xs text-gray-400">i</span>
-                        </label>
-                        <div className="flex gap-2">
-                          <input
-                            type="text"
-                            className="w-full border rounded px-3 py-2 text-sm"
-                            placeholder="Between"
-                            value={manualFilterValues.timeSpentBetween || ""}
-                            onChange={(e) =>
-                              updateManualFilter(
-                                "timeSpentBetween",
-                                e.target.value
-                              )
-                            }
-                          />
-                          <input
-                            type="text"
-                            className="w-full border rounded px-3 py-2 text-sm"
-                            placeholder="and"
-                            value={manualFilterValues.timeSpentAnd || ""}
-                            onChange={(e) =>
-                              updateManualFilter("timeSpentAnd", e.target.value)
-                            }
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold mb-1">
-                          Minimum Average Tenure{" "}
-                          <span className="ml-1 text-xs text-gray-400">i</span>
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full border rounded px-3 py-2 text-sm"
-                          placeholder="Select duration"
-                          value={manualFilterValues.minAvgTenure || ""}
-                          onChange={(e) =>
-                            updateManualFilter("minAvgTenure", e.target.value)
-                          }
-                        />
-                      </div>
-                    </div>
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Past Job Titles{" "}
-                        <span className="ml-1 text-xs text-gray-400">i</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Start typing a job title and select from the list"
-                        value={manualFilterValues.pastJobTitles || ""}
-                        onChange={(e) =>
-                          updateManualFilter("pastJobTitles", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="col-span-2 grid grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-semibold mb-1">
-                          Job Title Levels{" "}
-                          <span className="ml-1 text-xs text-gray-400">i</span>
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full border rounded px-3 py-2 text-sm"
-                          placeholder="Select levels"
-                          value={manualFilterValues.jobTitleLevels || ""}
-                          onChange={(e) =>
-                            updateManualFilter("jobTitleLevels", e.target.value)
-                          }
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold mb-1">
-                          Job Title Roles{" "}
-                          <span className="ml-1 text-xs text-gray-400">i</span>
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full border rounded px-3 py-2 text-sm"
-                          placeholder="Select roles"
-                          value={manualFilterValues.jobTitleRoles || ""}
-                          onChange={(e) =>
-                            updateManualFilter("jobTitleRoles", e.target.value)
-                          }
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {/* Company Category Fields */}
-                {selectedCategory === "company" && (
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Company Name
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="e.g. Google"
-                        value={manualFilterValues.companyName || ""}
-                        onChange={(e) =>
-                          updateManualFilter("companyName", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Company Size
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="e.g. 1000+"
-                        value={manualFilterValues.companySize || ""}
-                        onChange={(e) =>
-                          updateManualFilter("companySize", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Company Industries{" "}
-                        <span className="ml-1 text-xs text-gray-400">
-                          Current + Past
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Finance Related Fields, Tech Industries, Robotic..."
-                        value={manualFilterValues.companyIndustries || ""}
-                        onChange={(e) =>
-                          updateManualFilter(
-                            "companyIndustries",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Company Tags
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Clinical Trials, Semiconductor, Licensing etc."
-                        value={manualFilterValues.companyTags || ""}
-                        onChange={(e) =>
-                          updateManualFilter("companyTags", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Company HQ Locations
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Examples: San Francisco / United States / NYC ..."
-                        value={manualFilterValues.companyHQLocations || ""}
-                        onChange={(e) =>
-                          updateManualFilter(
-                            "companyHQLocations",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Company Founded After
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Founding Year"
-                        value={manualFilterValues.companyFoundedAfter || ""}
-                        onChange={(e) =>
-                          updateManualFilter(
-                            "companyFoundedAfter",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Company Funding Stages{" "}
-                        <span className="ml-1 text-xs text-gray-400">
-                          Current + Past
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder=""
-                        value={manualFilterValues.companyFundingStages || ""}
-                        onChange={(e) =>
-                          updateManualFilter(
-                            "companyFundingStages",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Estimated Revenue
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder=""
-                        value={manualFilterValues.estimatedRevenue || ""}
-                        onChange={(e) =>
-                          updateManualFilter("estimatedRevenue", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="col-span-2 grid grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-semibold mb-1">
-                          Companies{" "}
-                          <span className="ml-1 text-xs text-gray-400">
-                            Current + Past
-                          </span>
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full border rounded px-3 py-2 text-sm"
-                          placeholder="Search for Large recruiting agencies, Google, Indian IT companies, etc."
-                          value={manualFilterValues.companies || ""}
-                          onChange={(e) =>
-                            updateManualFilter("companies", e.target.value)
-                          }
-                        />
-                        <button className="mt-2 ml-2 bg-purple-100 text-purple-700 font-bold rounded px-4 py-2 text-sm">
-                          Select Preset
-                        </button>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold mb-1">
-                          Excluded Companies{" "}
-                          <span className="ml-1 text-xs text-gray-400">
-                            Current Only
-                          </span>
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full border rounded px-3 py-2 text-sm"
-                          placeholder="Example: Google, Microsoft, Apple, etc."
-                          value={manualFilterValues.excludedCompanies || ""}
-                          onChange={(e) =>
-                            updateManualFilter(
-                              "excludedCompanies",
-                              e.target.value
-                            )
-                          }
-                        />
-                        <button className="mt-2 ml-2 bg-purple-100 text-purple-700 font-bold rounded px-4 py-2 text-sm">
-                          Select Preset
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {/* Industry Category Fields */}
-                {selectedCategory === "industry" && (
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Company Industries{" "}
-                        <span className="ml-1 text-xs text-gray-400">
-                          Current + Past
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Finance Related Fields, Tech Industries, Robotic..."
-                        value={
-                          manualFilterValues.industryCompanyIndustries || ""
-                        }
-                        onChange={(e) =>
-                          updateManualFilter(
-                            "industryCompanyIndustries",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Company Tags
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Clinical Trials, Semiconductor, Licensing etc."
-                        value={manualFilterValues.industryCompanyTags || ""}
-                        onChange={(e) =>
-                          updateManualFilter(
-                            "industryCompanyTags",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
-                {/* Funding & Revenue Category Fields */}
-                {selectedCategory === "funding" && (
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Company Funding Stages{" "}
-                        <span className="ml-1 text-xs text-gray-400">
-                          Current + Past
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder=""
-                        value={manualFilterValues.fundingStages || ""}
-                        onChange={(e) =>
-                          updateManualFilter("fundingStages", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Estimated Revenue
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder=""
-                        value={manualFilterValues.fundingEstimatedRevenue || ""}
-                        onChange={(e) =>
-                          updateManualFilter(
-                            "fundingEstimatedRevenue",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
-                {/* Skills or Keywords Category Fields */}
-                {selectedCategory === "skills" && (
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Skills or Keywords
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Start typing — select from the list, or just hit enter..."
-                        value={manualFilterValues.skills || ""}
-                        onChange={(e) =>
-                          updateManualFilter("skills", e.target.value)
-                        }
-                      />
-                      <button className="mt-2 bg-purple-100 text-purple-700 font-bold rounded px-4 py-2 text-sm">
-                        Get Suggestions
-                      </button>
-                    </div>
-                  </div>
-                )}
-                {/* Power Filters Category Fields */}
-                {selectedCategory === "power" && (
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Power Filters{" "}
-                        <span className="ml-1 text-xs text-gray-400">
-                          Match Any
-                        </span>
-                      </label>
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {[
-                          "Gender Diversity",
-                          "Black or African American",
-                          "Hispanic or Latinx",
-                          "Promoted",
-                          "Fast Career Growth (Engineering)",
-                          "VC-Backed Founder",
-                          "Board Member",
-                          "Web3 Experience",
-                          "VP+ at PE-Backed Company",
-                        ].map((filter) => (
-                          <button
-                            key={filter}
-                            className={`bg-gray-100 text-gray-700 rounded px-3 py-1 text-xs font-semibold ${
-                              manualFilterValues.powerFilters?.includes(filter)
-                                ? "ring-2 ring-blue-400"
-                                : ""
-                            }`}
-                            type="button"
-                            onClick={() => {
-                              const prev =
-                                manualFilterValues.powerFilters || [];
-                              updateManualFilter(
-                                "powerFilters",
-                                prev.includes(filter)
-                                  ? prev.filter((f) => f !== filter)
-                                  : [...prev, filter]
-                              );
-                            }}
-                          >
-                            {filter}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {/* Likely to Switch Category Fields */}
-                {selectedCategory === "switch" && (
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Feature available on Growth & Business Plans{" "}
-                        <span className="ml-1 text-xs text-purple-700 underline cursor-pointer">
-                          Growth & Business
-                        </span>
-                      </label>
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        <label className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            checked={
-                              manualFilterValues.switchEnableAll || false
-                            }
-                            onChange={(e) =>
-                              updateManualFilter(
-                                "switchEnableAll",
-                                e.target.checked
-                              )
-                            }
-                          />{" "}
-                          Enable all
-                        </label>
-                      </div>
-                      <div className="flex flex-wrap gap-2 mt-4">
-                        {[
-                          "Average Tenure",
-                          "Recent Layoffs",
-                          "Company Funding",
-                          "Vesting",
-                          "Leadership Changes",
-                          "Career Stage",
-                        ].map((filter) => (
-                          <button
-                            key={filter}
-                            className={`bg-gray-100 text-gray-700 rounded px-3 py-1 text-xs font-semibold ${
-                              manualFilterValues.switchFilters?.includes(filter)
-                                ? "ring-2 ring-blue-400"
-                                : ""
-                            }`}
-                            type="button"
-                            onClick={() => {
-                              const prev =
-                                manualFilterValues.switchFilters || [];
-                              updateManualFilter(
-                                "switchFilters",
-                                prev.includes(filter)
-                                  ? prev.filter((f) => f !== filter)
-                                  : [...prev, filter]
-                              );
-                            }}
-                          >
-                            {filter}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {/* Education Category Fields */}
-                {selectedCategory === "education" && (
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Universities
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="HBCUs, Vanderbilt, All Ivy Leagues, Stanford, etc."
-                        value={manualFilterValues.universities || ""}
-                        onChange={(e) =>
-                          updateManualFilter("universities", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Excluded Universities
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="HBCUs, Vanderbilt, All Ivy Leagues, Stanford, etc."
-                        value={manualFilterValues.excludedUniversities || ""}
-                        onChange={(e) =>
-                          updateManualFilter(
-                            "excludedUniversities",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        University Locations
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="Examples: San Francisco / United States / NYC ..."
-                        value={manualFilterValues.universityLocations || ""}
-                        onChange={(e) =>
-                          updateManualFilter(
-                            "universityLocations",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Degree Requirements{" "}
-                        <span className="ml-1 text-xs text-gray-400">
-                          Regular
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder=""
-                        value={manualFilterValues.degreeRequirements || ""}
-                        onChange={(e) =>
-                          updateManualFilter(
-                            "degreeRequirements",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Fields of Study{" "}
-                        <span className="ml-1 text-xs text-gray-400">
-                          Regular
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder="All Engineering Majors, Natural Sciences, CS, etc."
-                        value={manualFilterValues.fieldsOfStudy || ""}
-                        onChange={(e) =>
-                          updateManualFilter("fieldsOfStudy", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Graduation Year (Min)
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder=""
-                        value={manualFilterValues.gradYearMin || ""}
-                        onChange={(e) =>
-                          updateManualFilter("gradYearMin", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">
-                        Graduation Year (Max)
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder=""
-                        value={manualFilterValues.gradYearMax || ""}
-                        onChange={(e) =>
-                          updateManualFilter("gradYearMax", e.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
-                {/* Languages Category Fields */}
-                {selectedCategory === "languages" && (
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="col-span-2">
-                      <label className="block text-sm font-semibold mb-1">
-                        Languages{" "}
-                        <span className="ml-1 text-xs text-gray-400">
-                          Any Proficiency Level
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border rounded px-3 py-2 text-sm"
-                        placeholder=""
-                        value={manualFilterValues.languages || ""}
-                        onChange={(e) =>
-                          updateManualFilter("languages", e.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
-                {/* Boolean & Name Category Fields */}
-                {selectedCategory === "boolean" && (
-                  <div className="text-gray-400 text-center py-16">
-                    (Boolean & Name filter fields coming soon...)
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <ManualSearch
+        manualFilterValues={manualFilterValues}
+        setManualFilterValues={setManualFilterValues}
+        onManualSearch={handleManualSearch}
+        isLoading={isManualSearchLoading}
+        show={showManualFilterModal}
+        onClose={() => setShowManualFilterModal(false)}
+        filterCategories={filterCategories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        filterSearch={filterSearch}
+        setFilterSearch={setFilterSearch}
+        updateManualFilter={updateManualFilter}
+      />
       {/* AI Search Examples (if AI tab) */}
       {tab === 1 && (
         <div className="rounded-[32px] px-12 py-10 mb-6 w-full min-h-[120px] flex flex-col justify-center" style={{ background: 'rgba(224, 233, 255, 1)', boxShadow: 'none' }}>
@@ -1350,7 +496,7 @@ function TalentSearchPage() {
                 style={{background: 'none', borderRadius: 0, padding: 0}}
                 onClick={e => { e.preventDefault(); setSearchPrompt(aiExamples[0]); }}
               >
-                “{aiExamples[0]}”
+                "{aiExamples[0]}"
               </a>
               <a
                 href="#"
@@ -1358,7 +504,7 @@ function TalentSearchPage() {
                 style={{background: 'none', borderRadius: 0, padding: 0}}
                 onClick={e => { e.preventDefault(); setSearchPrompt(aiExamples[1]); }}
               >
-                “{aiExamples[1]}”
+                "{aiExamples[1]}"
               </a>
             </div>
             <div className="flex flex-col gap-6 flex-1">
@@ -1368,7 +514,7 @@ function TalentSearchPage() {
                 style={{background: 'none', borderRadius: 0, padding: 0}}
                 onClick={e => { e.preventDefault(); setSearchPrompt(aiExamples[2]); }}
               >
-                “{aiExamples[2]}”
+                "{aiExamples[2]}"
               </a>
               <a
                 href="#"
@@ -1376,7 +522,7 @@ function TalentSearchPage() {
                 style={{background: 'none', borderRadius: 0, padding: 0}}
                 onClick={e => { e.preventDefault(); setSearchPrompt(aiExamples[3]); }}
               >
-                “{aiExamples[3]}”
+                "{aiExamples[3]}"
               </a>
             </div>
           </div>
@@ -1526,7 +672,7 @@ function TalentSearchPage() {
                     className="bg-blue-500 text-white font-medium rounded-md px-4 py-1.5 text-sm shadow-sm hover:bg-blue-600 transition"
                     onClick={() =>
                       navigate(`/talent-search/${i}`, {
-                        state: { candidates: filteredCandidates },
+                        state: { candidates: filteredCandidates, searchPrompt },
                       })
                     }
                   >

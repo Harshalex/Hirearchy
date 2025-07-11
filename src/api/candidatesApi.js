@@ -2,7 +2,16 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const candidatesApi = createApi({
     reducerPath: 'candidatesApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://4a65-103-180-81-194.ngrok-free.app' }),
+    baseQuery: fetchBaseQuery({
+        baseUrl: 'https://f6a5156da2ea.ngrok-free.app',
+        prepareHeaders: (headers, { getState }) => {
+            const token = getState().auth.token;
+            if (token && typeof token === 'string' && token !== 'undefined' && token.trim() !== '') {
+                headers.set('authorization', `Bearer ${token}`);
+            }
+            return headers;
+        },
+    }),
     endpoints: (builder) => ({
         searchCandidates: builder.mutation({
             query: (prompt) => ({
@@ -12,7 +21,15 @@ export const candidatesApi = createApi({
             }),
             transformResponse: (response) => response.profiles || [],
         }),
+        searchCandidatesWithFilters: builder.mutation({
+            query: (filters) => ({
+                url: 'getcandidate/search/',
+                method: 'POST',
+                body: { filters },
+            }),
+            transformResponse: (response) => response.profiles || [],
+        }),
     }),
 });
 
-export const { useSearchCandidatesMutation } = candidatesApi; 
+export const { useSearchCandidatesMutation, useSearchCandidatesWithFiltersMutation } = candidatesApi;
